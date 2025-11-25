@@ -29,8 +29,8 @@ export default async function HomePage() {
         {posts.docs.map((post) => {
           // Safety Check for Image
           const heroImageUrl =
-            post.heroImage && typeof post.heroImage === 'object' && 'url' in post.heroImage
-              ? post.heroImage.url
+            post.heroImage && typeof post.heroImage === 'object' && 'filename' in post.heroImage
+              ? `/media/${post.heroImage.filename}` // <--- We construct the correct URL manually
               : null
 
           return (

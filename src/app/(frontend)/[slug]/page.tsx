@@ -29,8 +29,8 @@ export default async function PostPage({ params }: Props) {
 
   // Extract Image URL safely
   const heroImageUrl =
-    post.heroImage && typeof post.heroImage === 'object' && 'url' in post.heroImage
-      ? post.heroImage.url
+    post.heroImage && typeof post.heroImage === 'object' && 'filename' in post.heroImage
+      ? `/media/${post.heroImage.filename}`
       : null
 
   return (
