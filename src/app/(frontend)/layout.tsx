@@ -2,6 +2,7 @@ import React from 'react'
 import './globals.css'
 import { Navbar } from '../../components/Navbar'
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { CookieBanner } from '../../components/CookieBanner'
 
 export const metadata = {
   description: 'Insights on Cloud, AI, and Software Architecture by ApexByte.',
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </footer>
+        <CookieBanner />
         <GoogleAnalytics gaId="G-3E6CB3PP66" />
       </body>
     </html>
