@@ -37,7 +37,12 @@ export default async function HomePage() {
             <Link
               key={post.id}
               href={`/${post.slug}`}
-              className="group flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 overflow-hidden"
+              // UPDATED CLASSES BELOW:
+              // 1. Changed shadow-sm to shadow (stronger base shadow)
+              // 2. Changed border-slate-100 to border-slate-200 (more visible border)
+              // 3. Changed hover:shadow-2xl to hover:shadow-xl (smoother lift)
+              // 4. Added hover:border-slate-300 (crisper definition on hover)
+              className="group flex flex-col bg-white rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200 hover:border-slate-300 overflow-hidden"
             >
               {/* Card Image */}
               <div className="h-52 w-full bg-slate-200 relative overflow-hidden">
