@@ -12,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col font-sans bg-slate-50 text-slate-900">
+      <body className="min-h-screen flex flex-col font-sans bg-blue-50/50 text-slate-900">
         {/* The New Responsive Navbar */}
         <Navbar />
 
