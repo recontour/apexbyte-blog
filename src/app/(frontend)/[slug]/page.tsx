@@ -2,14 +2,62 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import React from 'react'
 import { notFound } from 'next/navigation'
-import Link from 'next/link' // <--- Added Link import
+import Link from 'next/link'
 import { RichText } from '../../../components/RichText'
+import { Metadata } from 'next'
 
 type Props = {
   params: Promise<{
     slug: string
   }>
 }
+
+// --- NEW FUNCTION: Tells LinkedIn/Google what to show ---
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const payload = await getPayload({ config })
+
+  const result = await payload.find({
+    collection: 'posts',
+    where: {
+      slug: { equals: slug },
+    },
+  })
+
+  const post = result.docs[0]
+
+  if (!post) {
+    return {
+      title: 'ApexByte Blog',
+    }
+  }
+
+  // Construct the Absolute URL for the image (LinkedIn requires https://...)
+  const ogImageUrl =
+    post.heroImage && typeof post.heroImage === 'object' && 'filename' in post.heroImage
+      ? `https://apexbyte.blog/media/${post.heroImage.filename}`
+      : 'https://apexbyte.blog/media/default-og.png' // Fallback if no image
+
+  return {
+    title: `${post.title} | ApexByte`,
+    description: `Read more about ${post.title} on ApexByte.`,
+    openGraph: {
+      title: post.title,
+      description: `Read more about ${post.title} on ApexByte.`,
+      url: `https://apexbyte.blog/${post.slug}`,
+      siteName: 'ApexByte Blog',
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+        },
+      ],
+      type: 'article',
+    },
+  }
+}
+// -------------------------------------------------------
 
 export default async function PostPage({ params }: Props) {
   const { slug } = await params
@@ -29,32 +77,27 @@ export default async function PostPage({ params }: Props) {
 
   const post = result.docs[0]
 
-  // Construct Current Hero Image URL
+  // Construct Current Hero Image URL (Relative path is fine for the website itself)
   const heroImageUrl =
     post.heroImage && typeof post.heroImage === 'object' && 'filename' in post.heroImage
       ? `/media/${post.heroImage.filename}`
       : null
 
-  // 2. Fetch Related Posts (Same Category, Not Current Post)
+  // 2. Fetch Related Posts
   const categoryId = typeof post.category === 'object' ? post.category?.id : post.category
-
   let relatedPosts: any[] = []
 
   if (categoryId) {
     const relatedResult = await payload.find({
       collection: 'posts',
-      limit: 3, // Fetch 3 related
+      limit: 3,
       where: {
-        and: [
-          { category: { equals: categoryId } }, // Same Category
-          { id: { not_equals: post.id } }, // NOT this post
-        ],
+        and: [{ category: { equals: categoryId } }, { id: { not_equals: post.id } }],
       },
     })
     relatedPosts = relatedResult.docs
   }
 
-  // Fallback: If no related posts found (e.g. only 1 post in category), fetch recent posts
   if (relatedPosts.length === 0) {
     const recentResult = await payload.find({
       collection: 'posts',
@@ -69,7 +112,7 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-6 md:py-10">
-      {/* --- HERO SECTION --- */}
+      {/* HERO SECTION */}
       <div className="relative w-full h-64 md:h-[400px] rounded-xl md:rounded-2xl overflow-hidden shadow-lg mb-6">
         {heroImageUrl ? (
           <img src={heroImageUrl} alt={post.title} className="w-full h-full object-cover" />
@@ -89,7 +132,7 @@ export default async function PostPage({ params }: Props) {
         </div>
       </div>
 
-      {/* --- METADATA --- */}
+      {/* METADATA */}
       <div className="flex flex-col items-end border-b border-gray-200 pb-4 mb-6 md:mb-10">
         {typeof post.author === 'object' && (
           <span className="text-base md:text-lg font-bold text-slate-900">
@@ -107,19 +150,17 @@ export default async function PostPage({ params }: Props) {
         </time>
       </div>
 
-      {/* --- CONTENT --- */}
+      {/* CONTENT */}
       <div className="prose prose-base md:prose-xl prose-slate prose-headings:font-bold prose-a:text-blue-600 hover:prose-a:text-blue-500 mx-auto mb-20">
         <RichText content={post.content} />
       </div>
 
-      {/* --- READ NEXT SECTION --- */}
+      {/* READ NEXT */}
       {relatedPosts.length > 0 && (
         <div className="border-t border-gray-200 pt-10">
           <h3 className="text-2xl font-bold text-slate-900 mb-6">Read Next</h3>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {relatedPosts.map((related) => {
-              // Image Logic for Related Card
               const relatedImage =
                 related.heroImage &&
                 typeof related.heroImage === 'object' &&
