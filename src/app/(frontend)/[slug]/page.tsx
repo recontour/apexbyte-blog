@@ -15,46 +15,53 @@ type Props = {
 // --- NEW FUNCTION: Tells LinkedIn/Google what to show ---
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const payload = await getPayload({ config })
 
-  const result = await payload.find({
-    collection: 'posts',
-    where: {
-      slug: { equals: slug },
-    },
-  })
+  try {
+    const payload = await getPayload({ config })
 
-  const post = result.docs[0]
+    const result = await payload.find({
+      collection: 'posts',
+      where: {
+        slug: { equals: slug },
+      },
+    })
 
-  if (!post) {
-    return {
-      title: 'ApexByte Blog',
+    const post = result.docs[0]
+
+    if (!post) {
+      return { title: 'ApexByte Blog' }
     }
-  }
 
-  // Construct the Absolute URL for the image (LinkedIn requires https://...)
-  const ogImageUrl =
-    post.heroImage && typeof post.heroImage === 'object' && 'filename' in post.heroImage
-      ? `https://apexbyte.blog/media/${post.heroImage.filename}`
-      : 'https://apexbyte.blog/media/default-og.png' // Fallback if no image
+    const ogImageUrl =
+      post.heroImage && typeof post.heroImage === 'object' && 'filename' in post.heroImage
+        ? `https://apexbyte.blog/media/${post.heroImage.filename}`
+        : 'https://apexbyte.blog/media/default-og.png'
 
-  return {
-    title: `${post.title} | ApexByte`,
-    description: `Read more about ${post.title} on ApexByte.`,
-    openGraph: {
-      title: post.title,
-      description: `Read more about ${post.title} on ApexByte.`,
-      url: `https://apexbyte.blog/${post.slug}`,
-      siteName: 'ApexByte Blog',
-      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-        },
-      ],
-      type: 'article',
-    },
+    return {
+      title: `${post.title} | ApexByte`,
+      description: `Read insights about ${post.title} on ApexByte.`,
+      openGraph: {
+        title: post.title,
+        description: `Read insights about ${post.title} on ApexByte.`,
+        url: `https://apexbyte.blog/${post.slug}`,
+        siteName: 'ApexByte Blog',
+        images: [
+          {
+            url: ogImageUrl,
+            width: 1200,
+            height: 630,
+          },
+        ],
+        type: 'article',
+      },
+    }
+  } catch (error) {
+    // SAFETY VALVE: If DB fails during build, return default metadata
+    console.error('Metadata generation failed:', error)
+    return {
+      title: 'ApexByte Blog | Tech Insights',
+      description: 'Insights on Cloud, AI, and Software Architecture.',
+    }
   }
 }
 // -------------------------------------------------------
