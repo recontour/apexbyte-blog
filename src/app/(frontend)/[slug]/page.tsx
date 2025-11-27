@@ -130,7 +130,7 @@ export default async function PostPage({ params }: Props) {
 
         {/* 1. CATEGORY BADGE (Now moved to Top Left to match Homepage) */}
         <div className="absolute top-4 left-4 z-10">
-          <span className="inline-block px-3 py-1 text-[10px] md:text-xs font-bold tracking-wider text-white uppercase bg-blue-400/5 backdrop-blur-md border border-white/20 rounded-full shadow-sm">
+          <span className="inline-block px-4 py-1 text-[10px] md:text-xs font-bold tracking-wider text-white uppercase bg-blue-400/5 backdrop-blur-md border border-white/20 rounded-full shadow-sm">
             {post.category && typeof post.category === 'object' && 'name' in post.category
               ? post.category.name
               : 'Tech'}
