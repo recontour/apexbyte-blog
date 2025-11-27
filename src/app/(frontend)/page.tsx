@@ -14,20 +14,28 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-12">
-      {/* Hero Header */}
-      <div className="text-center space-y-4 mt-8">
-        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-          Latest Tech Insights
-        </h1>
-        <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-          Deep dives into Cloud Architecture, AI Strategy, and Modern Web Development.
-        </p>
+      {/* --- HERO HEADER --- */}
+      <div className="relative w-full py-20 md:py-28 rounded-3xl overflow-hidden shadow-xl">
+        {/* 1. Background Image (Raw, No Layers) */}
+        <div className="absolute inset-0">
+          <img src="/home-bg.jpg" alt="Tech Background" className="w-full h-full object-cover" />
+        </div>
+
+        {/* 2. Text Content (Restored to Original Dark Colors) */}
+        {/* Note: Ensure your image is light enough for dark text to be readable! */}
+        <div className="relative z-10 text-center px-4 space-y-4">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">
+            Latest Tech Insights
+          </h1>
+          <p className="text-xl text-slate-950 max-w-2xl mx-auto">
+            Deep dives into Cloud Architecture, AI Strategy, and Modern Web Development.
+          </p>
+        </div>
       </div>
 
-      {/* The Grid System */}
+      {/* --- THE GRID SYSTEM --- */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.docs.map((post) => {
-          // Bulletproof Image Logic (Filename Bypass)
           const heroImageUrl =
             post.heroImage && typeof post.heroImage === 'object' && 'filename' in post.heroImage
               ? `/media/${post.heroImage.filename}`
@@ -37,14 +45,8 @@ export default async function HomePage() {
             <Link
               key={post.id}
               href={`/${post.slug}`}
-              // UPDATED CLASSES BELOW:
-              // 1. Changed shadow-sm to shadow (stronger base shadow)
-              // 2. Changed border-slate-100 to border-slate-200 (more visible border)
-              // 3. Changed hover:shadow-2xl to hover:shadow-xl (smoother lift)
-              // 4. Added hover:border-slate-300 (crisper definition on hover)
               className="group flex flex-col bg-white rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200 hover:border-slate-300 overflow-hidden"
             >
-              {/* Card Image */}
               <div className="h-52 w-full bg-slate-200 relative overflow-hidden">
                 {heroImageUrl ? (
                   <img
@@ -58,9 +60,8 @@ export default async function HomePage() {
                   </div>
                 )}
 
-                {/* Overlay Badge */}
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 text-[10px] font-bold tracking-wider text-white uppercase bg-blue-400/5 backdrop-blur-md border border-white/20 rounded-full shadow-sm">
+                  <span className="px-3 py-1 text-[10px] font-bold tracking-wider text-white uppercase bg-black/20 backdrop-blur-md border border-white/20 rounded-full shadow-sm">
                     {post.category && typeof post.category === 'object' && 'name' in post.category
                       ? post.category.name
                       : 'Tech'}
@@ -68,14 +69,11 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              {/* Card Content */}
               <div className="flex-1 p-6 flex flex-col justify-between">
                 <div>
                   <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
                     {post.title}
                   </h3>
-
-                  {/* Date */}
                   <div className="mt-3 flex items-center text-slate-500 text-xs font-medium">
                     <svg
                       className="w-3 h-3 mr-1"
@@ -95,8 +93,6 @@ export default async function HomePage() {
                       : 'Draft'}
                   </div>
                 </div>
-
-                {/* The "Call to Action" Button */}
                 <div className="mt-6 flex items-center text-blue-600 font-bold text-sm group-hover:translate-x-1 transition-transform">
                   Read Article
                   <svg
