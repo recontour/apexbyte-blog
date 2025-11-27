@@ -14,20 +14,28 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-12">
-      {/* --- HERO HEADER --- */}
-      <div className="relative w-full py-20 md:py-28 rounded-3xl overflow-hidden shadow-xl">
-        {/* 1. Background Image (Raw, No Layers) */}
+      {/* --- HERO HEADER (Full Width + Gradient) --- */}
+      {/* Negative margins undo the layout padding to make it full width */}
+      <div className="relative w-[calc(100%+2rem)] -ml-4 sm:w-[calc(100%+3rem)] sm:-ml-6 lg:w-[calc(100%+4rem)] lg:-ml-8 h-80 md:h-[500px] mb-8 overflow-hidden">
+        {/* Background Image */}
         <div className="absolute inset-0">
           <img src="/home-bg.jpg" alt="Tech Background" className="w-full h-full object-cover" />
         </div>
 
-        {/* 2. Text Content (Restored to Original Dark Colors) */}
-        {/* Note: Ensure your image is light enough for dark text to be readable! */}
-        <div className="relative z-10 text-center px-4 space-y-4">
-          <h1 className="text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">
+        {/* Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/90" />
+
+        {/* Text Content */}
+        {/* UPDATES:
+           2. Padding: Changed p-8 to p-6 md:p-12
+           3. Bottom spacing: Changed pb-16 to pb-8 md:pb-16
+           4. Text Size: Changed text-4xl to text-3xl md:text-5xl (Scales better)
+        */}
+        <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-8 md:pb-16 text-center">
+          <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl drop-shadow-xl mb-3 md:mb-4">
             Latest Tech Insights
           </h1>
-          <p className="text-xl text-slate-950 max-w-2xl mx-auto">
+          <p className="text-base md:text-xl text-slate-200 max-w-2xl mx-auto font-medium drop-shadow-md leading-relaxed">
             Deep dives into Cloud Architecture, AI Strategy, and Modern Web Development.
           </p>
         </div>
@@ -45,7 +53,7 @@ export default async function HomePage() {
             <Link
               key={post.id}
               href={`/${post.slug}`}
-              className="group flex flex-col bg-white rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200 hover:border-slate-300 overflow-hidden"
+              className="group flex flex-col bg-white rounded-lg shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200 hover:border-slate-300 overflow-hidden"
             >
               <div className="h-52 w-full bg-slate-200 relative overflow-hidden">
                 {heroImageUrl ? (

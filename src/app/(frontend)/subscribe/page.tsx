@@ -29,7 +29,7 @@ export default function SubscribePage() {
 
   return (
     <div className="max-w-xl mx-auto py-20 px-4">
-      <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 md:p-12 text-center">
+      <div className="bg-white rounded-lg shadow-xl border border-slate-100 p-8 md:p-12 text-center">
         {/* Success State */}
         {status === 'success' ? (
           <div className="space-y-4">
@@ -79,14 +79,14 @@ export default function SubscribePage() {
                   placeholder="Enter your email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-lg"
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-lg"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full bg-blue-600 text-white font-bold py-4 rounded-lg hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {status === 'loading' ? 'Joining...' : 'Subscribe Now'}
               </button>

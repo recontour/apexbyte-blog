@@ -22,15 +22,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
 
         {/* FOOTER */}
-        <footer className="bg-white border-t border-gray-200 mt-auto">
-          <div className="max-w-5xl mx-auto py-8 px-4 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+        <footer className="bg-blue-100 border-t border-blue-100 mt-auto">
+          <div className="max-w-5xl mx-auto py-2 px-4 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
             {/* Copyright */}
             <div className="mb-4 md:mb-0">
               © {new Date().getFullYear()} ApexByte. All rights reserved.
             </div>
 
             {/* Links */}
-            <div className="flex space-x-6 items-center">
+            <div className="flex space-x-4 items-center">
               <a href="/privacy" className="hover:text-blue-600 transition-colors">
                 Privacy Policy
               </a>
