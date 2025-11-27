@@ -60,7 +60,7 @@ export default async function HomePage() {
 
                 {/* Overlay Badge */}
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 text-[10px] font-bold tracking-wider text-white uppercase bg-blue-600/90 backdrop-blur-md rounded-full shadow-sm">
+                  <span className="px-3 py-1 text-[10px] font-bold tracking-wider text-white uppercase bg-blue-400/5 backdrop-blur-md border border-white/20 rounded-full shadow-sm">
                     {post.category && typeof post.category === 'object' && 'name' in post.category
                       ? post.category.name
                       : 'Tech'}

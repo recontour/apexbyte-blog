@@ -119,23 +119,32 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-6 md:py-10">
-      {/* HERO SECTION */}
+      {/* 1. HERO SECTION */}
       <div className="relative w-full h-64 md:h-[400px] rounded-xl md:rounded-2xl overflow-hidden shadow-lg mb-6">
+        {/* Image */}
         {heroImageUrl ? (
           <img src={heroImageUrl} alt={post.title} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full bg-slate-800" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-        <div className="absolute bottom-0 left-0 p-4 md:p-8 w-full flex flex-col items-start">
-          <h1 className="text-white text-base md:text-4xl font-semibold leading-tight drop-shadow-md mb-2 md:mb-3">
-            {post.title}
-          </h1>
-          <span className="inline-block px-1.5 py-0.5 text-[9px] md:text-[11px] font-bold tracking-wider text-white uppercase bg-blue-600 rounded-full shadow-sm">
+
+        {/* 1. CATEGORY BADGE (Now moved to Top Left to match Homepage) */}
+        <div className="absolute top-4 left-4 z-10">
+          <span className="inline-block px-3 py-1 text-[10px] md:text-xs font-bold tracking-wider text-white uppercase bg-blue-400/5 backdrop-blur-md border border-white/20 rounded-full shadow-sm">
             {post.category && typeof post.category === 'object' && 'name' in post.category
               ? post.category.name
               : 'Tech'}
           </span>
+        </div>
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+
+        {/* 2. TITLE (Bottom Left - Clean, without the badge) */}
+        <div className="absolute bottom-0 left-0 p-4 md:p-8 w-full flex flex-col items-start">
+          <h1 className="text-white text-base md:text-4xl font-semibold leading-tight drop-shadow-md">
+            {post.title}
+          </h1>
         </div>
       </div>
 
