@@ -120,7 +120,7 @@ export default async function PostPage({ params }: Props) {
   return (
     <article className="max-w-4xl mx-auto px-4 py-6 md:py-10">
       {/* 1. HERO SECTION */}
-      <div className="relative w-full h-64 md:h-[400px] rounded-xl md:rounded-2xl overflow-hidden shadow-lg mb-6">
+      <div className="relative w-full h-64 md:h-[400px] rounded-lg overflow-hidden shadow-lg mb-6">
         {/* Image */}
         {heroImageUrl ? (
           <img src={heroImageUrl} alt={post.title} className="w-full h-full object-cover" />
@@ -186,15 +186,11 @@ export default async function PostPage({ params }: Props) {
 
               return (
                 <Link key={related.id} href={`/${related.slug}`} className="group block">
-                  <div className="h-40 w-full bg-slate-100 rounded-xl overflow-hidden mb-3 relative">
-                    {relatedImage && (
-                      <img
-                        src={relatedImage}
-                        alt={related.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    )}
-                  </div>
+                  <div className="h-40 w-full bg-slate-100 rounded-lg overflow-hidden mb-3 relative">
+     {relatedImage && (
+       <img src={relatedImage} alt={related.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+     )}
+  </div>
                   <h4 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
                     {related.title}
                   </h4>
