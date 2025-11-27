@@ -32,7 +32,7 @@ export default async function HomePage() {
            4. Text Size: Changed text-4xl to text-3xl md:text-5xl (Scales better)
         */}
         <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-8 md:pb-16 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl drop-shadow-xl mb-3 md:mb-4">
+          <h1 className="text-3xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl drop-shadow-xl mb-3 md:mb-4">
             Latest Tech Insights
           </h1>
           <p className="text-base md:text-xl text-slate-200 max-w-2xl mx-auto font-medium drop-shadow-md leading-relaxed">
@@ -53,7 +53,7 @@ export default async function HomePage() {
             <Link
               key={post.id}
               href={`/${post.slug}`}
-              className="group flex flex-col bg-white rounded-lg shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200 hover:border-slate-300 overflow-hidden"
+              className="group flex flex-col bg-white rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200 hover:border-slate-300 overflow-hidden"
             >
               <div className="h-52 w-full bg-slate-200 relative overflow-hidden">
                 {heroImageUrl ? (
