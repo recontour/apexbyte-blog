@@ -28,10 +28,10 @@ export default async function HomePage() {
         </div>
 
         <div className="relative z-10 text-center px-4 space-y-4">
-          <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
             Latest Tech Insights
           </h1>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+          <p className="text-xl text-white max-w-2xl mx-auto">
             Deep dives into Cloud Architecture, AI Strategy, and Modern Web Development.
           </p>
         </div>
