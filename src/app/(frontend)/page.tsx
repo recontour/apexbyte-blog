@@ -14,9 +14,12 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-12">
-      {/* --- HERO HEADER (Full Width + Gradient) --- */}
-      {/* Negative margins undo the layout padding to make it full width */}
-      <div className="relative w-[calc(100%+2rem)] -ml-4 sm:w-[calc(100%+3rem)] sm:-ml-6 lg:w-[calc(100%+4rem)] lg:-ml-8 h-80 md:h-[500px] mb-8 overflow-hidden">
+      {/* --- HERO HEADER (Full Screen Width + Flush to Top) --- */}
+      {/* 1. w-screen: Makes it as wide as the screen
+          2. ml-[calc(50%-50vw)]: Centers it and ignores parent padding
+          3. -mt-10: Pulls it up to cover the layout's top padding (removes the gap)
+      */}
+      <div className="relative w-screen ml-[calc(50%-50vw)] h-64 md:h-[500px] mb-8 overflow-hidden -mt-10">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img src="/home-bg.jpg" alt="Tech Background" className="w-full h-full object-cover" />
@@ -26,18 +29,16 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/90" />
 
         {/* Text Content */}
-        {/* UPDATES:
-           2. Padding: Changed p-8 to p-6 md:p-12
-           3. Bottom spacing: Changed pb-16 to pb-8 md:pb-16
-           4. Text Size: Changed text-4xl to text-3xl md:text-5xl (Scales better)
-        */}
-        <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-8 md:pb-16 text-left">
-          <h1 className="text-3xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl drop-shadow-xl mb-3 md:mb-4">
-            Latest Tech Insights
-          </h1>
-          <p className="text-base md:text-xl text-slate-200 max-w-2xl font-medium drop-shadow-md leading-relaxed">
-            Deep dives into Cloud Architecture, AI Strategy, and Modern Web Development.
-          </p>
+        {/* Added max-w-5xl mx-auto to align text with the rest of the site content */}
+        <div className="absolute bottom-0 left-0 w-full h-full flex flex-col justify-end">
+          <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-8 md:pb-16 text-left">
+            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl drop-shadow-xl mb-3 md:mb-4">
+              Latest Tech Insights
+            </h1>
+            <p className="text-base md:text-xl text-slate-200 max-w-2xl font-medium drop-shadow-md leading-relaxed">
+              Deep dives into Cloud Architecture, AI Strategy, and Modern Web Development.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -103,6 +104,19 @@ export default async function HomePage() {
                 </div>
                 <div className="mt-6 flex items-center text-blue-600 font-bold text-sm group-hover:translate-x-1 transition-transform">
                   Read Article
+                  <svg
+                    className="w-4 h-4 ml-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
                 </div>
               </div>
             </Link>
