@@ -1,8 +1,11 @@
+import { Inter } from 'next/font/google'
 import React from 'react'
 import './globals.css'
-import { Navbar } from '../../components/Navbar'
+import { HeaderWrapper } from '../../components/HeaderWrapper' // New Fixed Header
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { CookieBanner } from '../../components/CookieBanner'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   description: 'Insights on Cloud, AI, and Software Architecture by ApexByte.',
@@ -12,34 +15,29 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col font-sans bg-blue-50/50 text-slate-900">
-        {/* The New Responsive Navbar */}
-        <Navbar />
+      {/* Apply the Inter font class name */}
+      <body
+        className={`${inter.className} min-h-screen flex flex-col bg-blue-50/50 text-slate-900`}
+      >
+        <HeaderWrapper />
 
-        {/* CONTENT */}
-        <main className="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
-          {children}
-        </main>
+        {/* 3. SCROLLING CONTENT (This is the original content from your pages) */}
+        <main className="flex-grow max-w-5xl mx-auto w-full">{children}</main>
 
-        {/* FOOTER */}
-        <footer className="bg-blue-100 border-t border-blue-100 mt-auto">
-          <div className="max-w-5xl mx-auto py-2 px-4 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-            {/* Copyright */}
+        {/* 4. FOOTER */}
+        <footer className="bg-blue-50 border-t border-blue-100 mt-auto">
+          <div className="max-w-5xl mx-auto py-5 px-4 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
             <div className="mb-4 md:mb-0">
               © {new Date().getFullYear()} ApexByte. All rights reserved.
             </div>
-
-            {/* Links */}
-            <div className="flex space-x-4 items-center">
+            <div className="flex space-x-6 items-center">
               <a href="/privacy" className="hover:text-blue-600 transition-colors">
                 Privacy Policy
               </a>
               <a href="/terms" className="hover:text-blue-600 transition-colors">
                 Terms
               </a>
-
               <span className="text-gray-300">|</span>
-
               <a
                 href="https://www.apexbyte.co/contact"
                 className="hover:text-blue-600 transition-colors flex items-center"
@@ -57,8 +55,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </footer>
-        <CookieBanner />
+
         <GoogleAnalytics gaId="G-3E6CB3PP66" />
+        <CookieBanner />
       </body>
     </html>
   )

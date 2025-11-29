@@ -36,7 +36,7 @@ export const Navbar = () => {
       {/* PREMIUM HEADER 
         UPDATED: Changed bg-white/80 to bg-blue-50/80 (Hint of blue)
       */}
-      <nav className="fixed w-full top-0 z-50 border-b border-blue-100/50 backdrop-blur-md bg-blue-100/75 transition-all duration-500">
+      <nav className="fixed w-full top-0 z-50 transition-all duration-500">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             {/* LOGO */}
@@ -74,7 +74,7 @@ export const Navbar = () => {
             <div className="md:hidden flex items-center z-50">
               <button
                 onClick={toggleMenu}
-                className="text-slate-600 hover:text-blue-600 focus:outline-none p-2 transition-transform duration-200 active:scale-90"
+                className="text-blue-600 hover:text-blue-600 focus:outline-none p-2 transition-transform duration-200 active:scale-90"
               >
                 {isOpen ? (
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -132,7 +132,7 @@ export const Navbar = () => {
         )}
       </nav>
 
-      <div className="h-16" />
+      <div />
     </>
   )
 }

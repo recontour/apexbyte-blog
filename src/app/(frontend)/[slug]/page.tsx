@@ -12,20 +12,13 @@ type Props = {
   }>
 }
 
-// --- NEW FUNCTION: Tells LinkedIn/Google what to show ---
+// --- METADATA FUNCTION (Must be present for SEO) ---
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
+  const payload = await getPayload({ config })
 
   try {
-    const payload = await getPayload({ config })
-
-    const result = await payload.find({
-      collection: 'posts',
-      where: {
-        slug: { equals: slug },
-      },
-    })
-
+    const result = await payload.find({ collection: 'posts', where: { slug: { equals: slug } } })
     const post = result.docs[0]
 
     if (!post) {
@@ -45,26 +38,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: `Read insights about ${post.title} on ApexByte.`,
         url: `https://apexbyte.blog/${post.slug}`,
         siteName: 'ApexByte Blog',
-        images: [
-          {
-            url: ogImageUrl,
-            width: 1200,
-            height: 630,
-          },
-        ],
+        images: [{ url: ogImageUrl, width: 1200, height: 630 }],
         type: 'article',
       },
     }
   } catch (error) {
-    // SAFETY VALVE: If DB fails during build, return default metadata
     console.error('Metadata generation failed:', error)
-    return {
-      title: 'ApexByte Blog | Tech Insights',
-      description: 'Insights on Cloud, AI, and Software Architecture.',
-    }
+    return { title: 'ApexByte Blog | Tech Insights' }
   }
 }
-// -------------------------------------------------------
+// ---------------------------------------------------
 
 export default async function PostPage({ params }: Props) {
   const { slug } = await params
@@ -73,24 +56,19 @@ export default async function PostPage({ params }: Props) {
   // 1. Fetch Current Post
   const result = await payload.find({
     collection: 'posts',
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
+    where: { slug: { equals: slug } },
   })
 
   if (!result.docs[0]) notFound()
-
   const post = result.docs[0]
 
-  // Construct Current Hero Image URL (Relative path is fine for the website itself)
+  // Construct Current Hero Image URL for style background
   const heroImageUrl =
     post.heroImage && typeof post.heroImage === 'object' && 'filename' in post.heroImage
       ? `/media/${post.heroImage.filename}`
       : null
 
-  // 2. Fetch Related Posts
+  // 2. Fetch Related Posts (Fallback logic remains the same)
   const categoryId = typeof post.category === 'object' ? post.category?.id : post.category
   let relatedPosts: any[] = []
 
@@ -98,9 +76,7 @@ export default async function PostPage({ params }: Props) {
     const relatedResult = await payload.find({
       collection: 'posts',
       limit: 3,
-      where: {
-        and: [{ category: { equals: categoryId } }, { id: { not_equals: post.id } }],
-      },
+      where: { and: [{ category: { equals: categoryId } }, { id: { not_equals: post.id } }] },
     })
     relatedPosts = relatedResult.docs
   }
@@ -110,105 +86,99 @@ export default async function PostPage({ params }: Props) {
       collection: 'posts',
       limit: 3,
       sort: '-publishedDate',
-      where: {
-        id: { not_equals: post.id },
-      },
+      where: { id: { not_equals: post.id } },
     })
     relatedPosts = recentResult.docs
   }
 
   return (
-    <article className="max-w-4xl mx-auto px-2 py-6 md:py-10">
-      {/* 1. HERO SECTION */}
-      <div className="relative w-full h-64 md:h-[400px] rounded-lg md:rounded-lg overflow-hidden shadow-lg mb-6">
-        {/* Image */}
-        {heroImageUrl ? (
-          <img src={heroImageUrl} alt={post.title} className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full bg-slate-800" />
-        )}
-
-        {/* 1. CATEGORY BADGE (Now moved to Top Left to match Homepage) */}
-        <div className="absolute top-4 left-4 z-10">
-          <span className="inline-block px-4 py-1 text-[10px] md:text-xs font-bold tracking-wider text-white uppercase bg-blue-400/5 backdrop-blur-md border border-white/20 rounded-full shadow-sm">
-            {post.category && typeof post.category === 'object' && 'name' in post.category
-              ? post.category.name
-              : 'Tech'}
-          </span>
-        </div>
-
-        {/* Gradient Overlay */}
+    // Only return the content. The layout.tsx wraps this in <main>
+    <div className="relative">
+      {/* 1. FIXED HERO CONTAINER */}
+      <div
+        className="fixed inset-x-0 top-0 w-full h-[30vh] md:h-48 z-10 overflow-hidden bg-cover bg-center"
+        style={{ backgroundImage: heroImageUrl ? `url('${heroImageUrl}')` : 'none' }}
+      >
+        {/* Gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
 
-        {/* 2. TITLE (Bottom Left - Clean, without the badge) */}
-        <div className="absolute bottom-0 left-0 p-4 md:p-8 w-full flex flex-col items-start">
-          <h1 className="text-white text-base md:text-4xl font-semibold leading-tight drop-shadow-md">
-            {post.title}
-          </h1>
-        </div>
-      </div>
-
-      {/* METADATA */}
-      <div className="flex flex-col items-end border-b border-gray-200 pb-4 mb-6 md:mb-10">
-        {typeof post.author === 'object' && (
-          <span className="text-base md:text-lg font-bold text-slate-900">
-            {post.author?.name || 'Ashwin Torphe'}
-          </span>
-        )}
-        <time className="text-xs md:text-sm text-slate-500 mt-1">
-          {post.publishedDate
-            ? new Date(post.publishedDate).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })
-            : ''}
-        </time>
-      </div>
-
-      {/* CONTENT */}
-      <div className="prose prose-base md:prose-xl prose-slate prose-headings:font-bold prose-a:text-blue-600 hover:prose-a:text-blue-500 mx-auto mb-20">
-        <RichText content={post.content} />
-      </div>
-
-      {/* READ NEXT */}
-      {relatedPosts.length > 0 && (
-        <div className="border-t border-gray-200 pt-10">
-          <h3 className="text-2xl font-bold text-slate-900 mb-6">Read Next</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {relatedPosts.map((related) => {
-              const relatedImage =
-                related.heroImage &&
-                typeof related.heroImage === 'object' &&
-                'filename' in related.heroImage
-                  ? `/media/${related.heroImage.filename}`
-                  : null
-
-              return (
-                <Link key={related.id} href={`/${related.slug}`} className="group block">
-                  <div className="h-40 w-full bg-slate-100 rounded-lg overflow-hidden mb-3 relative">
-                    {relatedImage && (
-                      <img
-                        src={relatedImage}
-                        alt={related.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    )}
-                  </div>
-                  <h4 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-                    {related.title}
-                  </h4>
-                  <div className="text-xs text-slate-500 mt-1">
-                    {related.publishedDate
-                      ? new Date(related.publishedDate).toLocaleDateString()
-                      : ''}
-                  </div>
-                </Link>
-              )
-            })}
+        {/* Title Overlay */}
+        <div className="absolute bottom-0 left-0 w-full h-full flex flex-col justify-end">
+          <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-4 md:pb-8 text-left">
+            <h1 className="text-white text-xl md:text-2xl font-semibold leading-tight drop-shadow-md mb-2">
+              {post.title}
+            </h1>
           </div>
         </div>
-      )}
-    </article>
+      </div>
+
+      {/* 2. SPACER (Pushes content down to appear below fixed hero) */}
+      <div className="h-[30vh] md:h-48 pt-10" />
+
+      {/* 3. METADATA & ARTICLE CONTENT (The Scrolling Content) */}
+      <article className="max-w-4xl mx-auto p-4 px-4 sm:px-6 lg:px-8">
+        {/* METADATA SECTION */}
+        <div className="flex flex-col items-end border-b border-gray-200 pb-4 mb-6 md:mb-10">
+          {typeof post.author === 'object' && (
+            <span className="text-base md:text-lg font-bold text-slate-900">
+              {post.author?.name || 'Ashwin Torphe'}
+            </span>
+          )}
+          <time className="text-xs md:text-sm text-slate-500 mt-1">
+            {post.publishedDate
+              ? new Date(post.publishedDate).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })
+              : ''}
+          </time>
+        </div>
+
+        {/* CONTENT */}
+        <div className="prose prose-base md:prose-xl prose-slate prose-headings:font-bold prose-a:text-blue-600 hover:prose-a:text-blue-500 mx-auto mb-20">
+          <RichText content={post.content} />
+        </div>
+
+        {/* READ NEXT SECTION */}
+        {relatedPosts.length > 0 && (
+          <div className="border-t border-gray-200 pt-10">
+            <h3 className="text-2xl font-bold text-slate-900 mb-6">Read Next</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedPosts.map((related) => {
+                const relatedImage =
+                  related.heroImage &&
+                  typeof related.heroImage === 'object' &&
+                  'filename' in related.heroImage
+                    ? `/media/${related.heroImage.filename}`
+                    : null
+
+                return (
+                  <Link key={related.id} href={`/${related.slug}`} className="group block">
+                    <div className="h-40 w-full bg-slate-100 rounded-xl overflow-hidden mb-3 relative">
+                      {relatedImage && (
+                        <img
+                          src={relatedImage}
+                          alt={related.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      )}
+                    </div>
+                    <h4 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+                      {related.title}
+                    </h4>
+                    <div className="text-xs text-slate-500 mt-1">
+                      {related.publishedDate
+                        ? new Date(related.publishedDate).toLocaleDateString()
+                        : ''}
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        )}
+      </article>
+    </div>
   )
 }
