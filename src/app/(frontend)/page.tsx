@@ -16,7 +16,7 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-12">
-      <div className="pt-[35vh] md:pt-52">
+      <div className="pt-[31vh] md:pt-52">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
           {posts.docs.map((post) => {
             // ... (keep the existing grid map logic) ...
