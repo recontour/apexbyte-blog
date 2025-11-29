@@ -54,7 +54,7 @@ export const Navbar = () => {
             <div className="hidden md:flex space-x-8 items-center">
               <NavLink href="/">Home</NavLink>
 
-              <NavLink href="https://www.apexbyte.co/about">
+              <NavLink href="https://www.apexbyte.co/#about">
                 About <ExternalArrow />
               </NavLink>
 
@@ -108,7 +108,7 @@ export const Navbar = () => {
             <div className="px-6 pt-8 pb-4 space-y-4 flex flex-col">
               <MobileNavLink href="/">Home</MobileNavLink>
 
-              <MobileNavLink href="https://www.apexbyte.co/about">
+              <MobileNavLink href="https://www.apexbyte.co/#about">
                 About <ExternalArrow />
               </MobileNavLink>
 
