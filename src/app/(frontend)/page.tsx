@@ -4,6 +4,34 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import Link from 'next/link'
 import React from 'react'
+import { Metadata } from 'next' // Add Metadata import
+
+export const metadata: Metadata = {
+  title: 'ApexByte Blog | Latest Tech Insights',
+  description:
+    'Deep dives into Cloud Architecture, AI Strategy, and Modern Web Development. Read our comprehensive guides and checklists.',
+  openGraph: {
+    title: 'ApexByte Blog | Latest Tech Insights',
+    description:
+      'Deep dives into Cloud Architecture, AI Strategy, and Modern Web Development. Read our comprehensive guides and checklists.',
+    url: 'https://apexbyte.blog',
+    siteName: 'ApexByte Blog',
+    // Use your hero image as the main sharing image
+    images: [
+      {
+        url: 'https://apexbyte.blog/home-bg.jpg', // Ensure this image is prominent and exists in public folder
+        width: 1200,
+        height: 630,
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ApexByte Blog | Latest Tech Insights',
+    description: 'Deep dives into Cloud Architecture, AI Strategy, and Modern Web Development.',
+  },
+}
 
 export default async function HomePage() {
   const payload = await getPayload({ config })
